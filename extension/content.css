@@ -1,0 +1,20 @@
+#vna-take-notes.vna-btn {
+  width: auto !important;
+  padding: 0 10px !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  vertical-align: top;
+  color: #fff;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: .92;
+}
+
+#vna-take-notes.vna-btn:hover { opacity: 1; }
+#vna-take-notes .vna-label { line-height: 1; }
+#vna-take-notes[data-state="busy"] { opacity: .6; cursor: progress; }
+#vna-take-notes[data-state="ok"] { color: #7ee2a8; }
+#vna-take-notes[data-state="error"] { color: #ff8a80; }

@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Video Notes Agent",
+  "version": "1.0.0",
+  "description": "One click on a YouTube video -> study notes with real frames in Notion.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA60ebsVRwLZEPmFN1cCScI4YHTboYNk6CpbAwbHiFsAtpa80qRi4QCFvctgbbtr+vQUDLnmUdjNYQ66EWMEnDMH2J3ld5Hog5zci00hArgZUDkTagGfAmhaV9H6vdBQL14xdE+jxbFNULc66ioU6EJkuI72wNbfUerozC4u8NeUkq4DkG/2sxIPlxTT6epS/HYxeszF59uHdjm/qsO1bJtMk6omJPHbyzqE1zDStPPPKl86SZz7KbP+58cSTbtR0KWuzneTNol4OlYuP+k2cYpLpqrZmYqZ7UTV9cj3bm6JkM2VZa1JLu6az7EWphdJ0c+2a8WYe3tDMkkAuCF4BWvwIDAQAB",
+  "permissions": ["storage", "identity", "alarms", "notifications"],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "http://127.0.0.1:8000/*"
+  ],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*", "https://m.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Video Notes",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png" }
+  },
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+}

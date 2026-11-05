@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="icons/icon32.png" alt="">
+      <span>Video Notes</span>
+    </div>
+    <button id="gear" class="icon-btn" title="Settings">⚙</button>
+  </header>
+
+  <section id="notion-bar" class="bar"></section>
+
+  <section id="settings" hidden>
+    <label>Gateway URL
+      <input id="api-base" type="text" placeholder="http://localhost:8000">
+    </label>
+    <label>Notion parent page / database (optional)
+      <input id="parent-id" type="text" placeholder="paste a page link or id">
+    </label>
+    <details>
+      <summary>Use an internal integration token instead of OAuth</summary>
+      <input id="manual-token" type="password" placeholder="ntn_... or secret_...">
+      <button id="save-token" class="small">Use token</button>
+    </details>
+    <div class="row">
+      <button id="save-settings" class="small primary">Save</button>
+      <button id="check-health" class="small">Check backend</button>
+      <span id="health" class="muted"></span>
+    </div>
+  </section>
+
+  <main id="jobs"></main>
+
+  <footer>
+    <span class="muted">Open a YouTube video and hit <b>Take Notes</b> in the player.</span>
+    <button id="clear" class="link">Clear finished</button>
+  </footer>
+
+  <template id="job-tpl">
+    <article class="job">
+      <div class="job-head">
+        <div class="title"></div>
+        <span class="pill"></span>
+      </div>
+      <ol class="steps"></ol>
+      <div class="progress"><div class="fill"></div></div>
+      <div class="detail"></div>
+      <div class="box warn" hidden></div>
+      <div class="box error" hidden></div>
+      <div class="actions"></div>
+    </article>
+  </template>
+
+  <script src="popup.js"></script>
+</body>
+</html>

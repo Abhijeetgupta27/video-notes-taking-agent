@@ -1,0 +1,65 @@
+name: notetaker
+
+x-common-env: &env
+  RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+  REDIS_URL: redis://redis:6379/0
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    hostname: rabbit          # fixed node name so the volume (queued msgs) survives restarts
+    ports:
+      - "5672:5672"
+      - "15672:15672"         # management UI, guest/guest - handy to look at the DLQ
+    volumes:
+      - rabbit-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    env_file:
+      - path: .env
+        required: false
+    environment: *env
+    ports:
+      - "8000:8000"
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    env_file:
+      - path: .env
+        required: false
+    environment: *env
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    deploy:
+      replicas: 2             # override with: docker compose up --scale worker=N
+    stop_grace_period: 15s
+    # no restart policy on purpose: a killed worker should stay dead for the crash demo
+
+volumes:
+  rabbit-data:
+  redis-data:

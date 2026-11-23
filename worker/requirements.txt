@@ -1,0 +1,8 @@
+aio-pika==10.2.*
+redis==8.1.*
+httpx==0.28.*
+cryptography>=43
+youtube-transcript-api==1.2.*
+# yt-dlp needs a JS runtime for youtube these days, the deno wheel puts one on PATH
+yt-dlp[default]>=2026.10.26
+deno>=2.5
